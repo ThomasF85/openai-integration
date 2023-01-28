@@ -1,0 +1,17 @@
+export const relations: string[] = [
+  "mother",
+  "father",
+  "parent",
+  "sister",
+  "brother",
+  "sibling",
+  "son",
+  "daughter",
+  "child",
+  "wife",
+  "husband",
+  "girlfriend",
+  "boyfriend",
+  "partner",
+  "friend",
+];
