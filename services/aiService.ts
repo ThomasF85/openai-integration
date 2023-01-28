@@ -6,7 +6,7 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-export async function createAnswer(prompt) {
+export async function createAnswer(prompt): Promise<string> {
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt,
@@ -17,7 +17,7 @@ export async function createAnswer(prompt) {
     presence_penalty: 0.0,
   });
 
-  return response.data.choices[0].text;
+  return response.data.choices[0].text as string;
 }
 
 export async function createImage(prompt) {

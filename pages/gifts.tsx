@@ -32,11 +32,11 @@ export default function Gifts() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.target as HTMLFormElement);
     const data = Object.fromEntries(formData);
 
     const result: IdeaSet = await trigger(data);
-    event.target.reset();
+    (event.target as HTMLFormElement).reset();
     setIdeaSets((prev) => [{ ...result }, ...prev]);
   }
 
