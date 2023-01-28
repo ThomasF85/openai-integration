@@ -7,7 +7,7 @@ function createPrompt({ name, relation, occasion, hobbies }) {
 
 async function handler(req, res) {
   if (req.method === "POST") {
-    const answer = await createAnswer(createPrompt(JSON.parse(req.body)));
+    const answer = await createAnswer(createPrompt(req.body));
 
     const ideas = answer
       .split("\n")
@@ -15,7 +15,7 @@ async function handler(req, res) {
       .map((str) => str.substring(3));
 
     return res.status(200).json({
-      ...JSON.parse(req.body),
+      ...req.body,
       ideas,
     });
   }
