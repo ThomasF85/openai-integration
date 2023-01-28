@@ -7,6 +7,20 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export async function createAnswer(prompt): Promise<string> {
+  const time = Date.now();
+  const moderationResponse: any = await openai.createModeration({
+    input: prompt,
+  });
+  console.log(Date.now() - time);
+  console.log(moderationResponse.data.results[0].categories);
+  if (
+    Object.values(moderationResponse.data.results[0].categories).some(
+      (value) => value === true
+    )
+  ) {
+    throw new Error("Request did not pass moderation");
+  }
+
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt,

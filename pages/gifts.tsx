@@ -16,18 +16,32 @@ import { relations } from "../src/db/inputParameters";
 import IdeasCard, { IdeaSet } from "../src/components/IdeasCard";
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
+import Alert from "@mui/material/Alert";
 
 async function sendRequest(url, { arg }) {
-  return fetch(url, {
+  const res = await fetch(url, {
     method: "POST",
     body: JSON.stringify(arg),
-  }).then((res) => res.json());
+  });
+
+  if (!res.ok) {
+    const error: any = new Error("An error occurred while fetching the data.");
+    // Attach extra info to the error object.
+    error.info = await res.json();
+    error.status = res.status;
+    throw error;
+  }
+
+  return res.json();
 }
 
 export default function Gifts() {
   const [ideaSets, setIdeaSets] = useState<IdeaSet[]>([]);
 
-  const { trigger, isMutating } = useSWRMutation("/api/gifts", sendRequest);
+  const { trigger, isMutating, error } = useSWRMutation(
+    "/api/gifts",
+    sendRequest
+  );
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,9 +49,13 @@ export default function Gifts() {
     const formData = new FormData(event.target as HTMLFormElement);
     const data = Object.fromEntries(formData);
 
-    const result: IdeaSet = await trigger(data);
-    (event.target as HTMLFormElement).reset();
-    setIdeaSets((prev) => [{ ...result }, ...prev]);
+    try {
+      const result: IdeaSet = await trigger(data);
+      (event.target as HTMLFormElement).reset();
+      setIdeaSets((prev) => [{ ...result }, ...prev]);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -116,6 +134,11 @@ export default function Gifts() {
             </Button>
           </Box>
         </Paper>
+        {error && !isMutating && (
+          <Alert severity="error">
+            Something went wrong, pleases try again!
+          </Alert>
+        )}
         {isMutating && (
           <CircularProgress sx={{ display: "block", mx: "auto" }} />
         )}
