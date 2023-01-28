@@ -17,7 +17,8 @@ export function withErrorHandling(
       if (error?.name === ModerationError.name) {
         return res.status(400).json({ error });
       }
-      return res.status(500).json({ message: "Something went wrong" });
+      console.error("non moderation error on request", error);
+      return res.status(500).json({ error });
     }
   };
 }
