@@ -8,7 +8,9 @@ export class ModerationError extends Error {
     this.name = this.constructor.name;
 
     // capturing the stack trace keeps the reference to your error class
-    Error.captureStackTrace(this, this.constructor);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
 
     this.flags = flags;
   }

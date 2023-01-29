@@ -12,6 +12,8 @@ export async function postRequest(url, { arg }) {
 
   if (!res.ok) {
     const info = await res.json();
+    console.log("X1", info?.error?.name);
+    console.log("X2", info?.error?.name === ModerationError.name);
     if (info?.error?.name === ModerationError.name) {
       const error: ModerationError = info.error;
       throw new ModerationError(error.flags);
