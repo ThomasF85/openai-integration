@@ -14,7 +14,7 @@ export function withErrorHandling(
       }
       return await handler(req, res);
     } catch (error: any) {
-      if (error?.name === ModerationError.name) {
+      if (error?.name === ModerationError.NAME) {
         return res.status(400).json({ error });
       }
       console.error("non moderation error on request", error);

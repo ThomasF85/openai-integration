@@ -5,7 +5,7 @@ export class ModerationError extends Error {
     super();
 
     // assign the error class name in your custom error (as a shortcut)
-    this.name = this.constructor.name;
+    this.name = ModerationError.NAME;
 
     // capturing the stack trace keeps the reference to your error class
     if (Error.captureStackTrace) {
@@ -14,4 +14,6 @@ export class ModerationError extends Error {
 
     this.flags = flags;
   }
+
+  static NAME = "ModerationError";
 }
