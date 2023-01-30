@@ -8,8 +8,8 @@ export default function Home() {
       <Link href="/gifts" color="secondary">
         Go to the gift ideas creator
       </Link>
-      <Link href="/images" color="secondary">
-        Go to image creator
+      <Link href="/embeddings" color="secondary">
+        Go to embedding creator
       </Link>
     </>
   );

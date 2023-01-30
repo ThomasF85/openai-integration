@@ -23,7 +23,7 @@ export async function createAnswer(prompt): Promise<string> {
   return response.data.choices[0].text as string;
 }
 
-export async function createImage(prompt) {
+export async function createImage(prompt: string): Promise<string> {
   await moderate(prompt);
 
   const response = await openai.createImage({
@@ -31,7 +31,16 @@ export async function createImage(prompt) {
     n: 1,
     size: "1024x1024",
   });
-  return response.data.data[0].url;
+  return response.data.data[0].url as string;
+}
+
+export async function createEmbedding(input: string): Promise<number[]> {
+  const response = await openai.createEmbedding({
+    model: "text-embedding-ada-002",
+    input,
+  });
+
+  return response.data.data[0].embedding;
 }
 
 async function moderate(prompt) {
